@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+	xmlns:activiti="http://activiti.org/bpmn" targetNamespace="Examples">
+
+	<process id="simpleProcess" name="Simple Process">
+		<startEvent id="theStart" />
+		<sequenceFlow sourceRef="theStart" targetRef="theTask1" />
+
+		<userTask id="theTask1" name="Task 1" activiti:assignee="${applicant.name}">
+			<documentation>
+				Do the first task.
+			</documentation>
+		</userTask>
+
+		<sequenceFlow sourceRef="theTask1" targetRef="theTask2" />
+
+		<userTask id="theTask2" name="Task 2" activiti:assignee="${applicant.name}">
+			<documentation>
+				Work for the second task.
+			</documentation>
+		</userTask>
+
+		<sequenceFlow sourceRef="theTask2" targetRef="theTask3" />
+
+		<serviceTask id="theTask3" name="Store resume" activiti:expression="${resumeService.storeResume()}"/>
+
+		<sequenceFlow sourceRef="theTask3" targetRef="theTask4" />
+
+		<serviceTask id="theTask4" name="Store resume" activiti:expression="${exceptionService.storeResume()}"/>
+
+		<sequenceFlow sourceRef="theTask4" targetRef="theTask5" />
+
+		<serviceTask id="theTask5" name="Store resume" activiti:expression="${resumeService.storeResume()}"/>
+
+		<sequenceFlow sourceRef="theTask5" targetRef="theTask6" />
+
+		<serviceTask id="theTask6" name="Store resume" activiti:expression="${resumeService.storeResume()}"/>
+
+		<sequenceFlow sourceRef="theTask6" targetRef="notification" />
+
+		<scriptTask id="notification" name="final Notice" scriptFormat="groovy">
+			<script>
+				println 'finish Process.'
+			</script>
+		</scriptTask>
+
+		<sequenceFlow sourceRef="notification" targetRef="theEnd" />
+		<endEvent id="theEnd" />
+	</process>
+
+</definitions>
